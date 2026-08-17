@@ -1,0 +1,2 @@
+# Third-party browser libraries are not authored as part of BlocVote.
+lib/** linguist-vendored
