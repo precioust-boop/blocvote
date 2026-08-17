@@ -1,0 +1,162 @@
+<!-- Bloc-Vote by Precious Temowo -->
+<html>
+
+<head>
+    <title>Bloc-Vote</title>
+    <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+</head>
+
+<body>
+
+
+
+    <!-- Voter Login -->
+    <div class="container">
+        <br>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <img src="blocvote.png" alt="">
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <br>
+            <br>
+            <div class="card">
+                <div class="card-head">
+                    <h3
+                        style="text-align: center; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                        Election Details</h3>
+                </div>
+                <div class="card-body">
+                    <div class="col-md-4"></div>
+                    <!-- Enter Election Name -->
+                    <!-- <form>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <h5
+                                        style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                                        Election Name</h5>
+                                    <input type="text" id="newElectionName" placeholder="Enter Election Name"
+                                        class="form-control"><br>
+                                    <button class="btn btn-success" id="createElection"
+                                        style="width: 150px;">Create</button> <br> <br>
+                                </div>
+                            </div>
+                        </div>
+                    </form> -->
+                    <!-- Add Candidate -->
+                    <form>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <h5
+                                        style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                                        Add Candidate</h5>
+                                    <small class="form-text text-muted">Add candidates one after the other</small>
+                                    <input type="text" id="candidateName" required placeholder="Candidate Name"
+                                        class="form-control"><br>
+                                    <button class="btn btn-primary" id="addCandidate" style="width: 150px;">Add</button>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- Authorise Voter -->
+                    <form id="authoriseVoterForm">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <h5
+                                        style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+                                        Authorise Voter
+                                    </h5>
+                                    <small class="form-text text-muted">Authorise voters one after the other</small>
+                                    <input required type="text" id="address" placeholder="Address"
+                                        class="form-control"><br>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input required type="text" id="voterName" placeholder="Voter Name"
+                                        class="form-control">
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input required type="email" id="voterEmail" placeholder="Voter Email"
+                                        class="form-control"><br>
+                                    <button type="submit" class="btn btn-primary" id="authoriseVoter"
+                                        style="width: 150px;">Authorise</button> <br>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+            </form>
+
+
+            <div class="card-footer">
+                <a href="admin-dashboard.html" class="btn btn-danger text-white" style="width:150px;">Finish</a>
+                <br>
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+
+
+    <script src="lib/js/jquery-3.4.1.min.js"></script>
+    <script src="lib/js/popper.min.js"></script>
+    <script src="lib/js/bootstrap.min.js"></script>
+    <script src="lib/js/web3.min.js"></script>
+    <script src="app.js"></script>
+
+    <script>
+        console.log(ElectionApp);
+
+        $('#addCandidate').click(e => {
+            e.preventDefault();
+            const name = $('#candidateName').val();
+
+            if (!name) {
+                return alert('You have to enter a candidate name');
+            }
+
+            ElectionApp.Contract.methods.addCandidate(name).send({ from: ElectionApp.accounts[0] }).then(result => {
+                alert("Candidate Added Successfully");
+            }).catch(error => {
+                alert("Failed to Add Candidate");
+            });
+
+        });
+
+        $('#authoriseVoterForm').submit(e => {
+            e.preventDefault();
+            const address = e.target.address.value;
+            const voterName = e.target.voterName.value;
+            const voterEmail = e.target.voterEmail.value;
+            console.log(address, voterName, voterEmail);
+
+            ElectionApp.Contract.methods.authoriseVoter(address, voterName, voterEmail)
+                .send({ from: ElectionApp.accounts[0] }).then(result => {
+                    alert("Voter Authorised Successfully");
+                }).catch(error => {
+                    alert("Failed to Authorise Voter");
+                });
+        });
+
+
+    </script>
+</body>
+
+
+</html>

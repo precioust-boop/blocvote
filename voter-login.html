@@ -1,0 +1,95 @@
+<!-- Bloc-Vote by Precious Temowo -->
+<html>
+
+<head>
+	<title>Bloc-Vote</title>
+	<link rel="stylesheet" href="lib/css/bootstrap.min.css">
+</head>
+
+<body>
+
+
+
+	<!-- Voter Login -->
+	<div class="container">
+		<br>
+		<br>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4">
+					<img src="blocvote.png" alt="">
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+			<br>
+			<br>
+			<div class="card">
+				<div class="card-head">
+					<h3 style="text-align: center; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+						Voter Login</h3>
+				</div>
+				<div class="card-body">
+					<form action="register.php" method="POST">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="text" id="voterid" name="voterid" placeholder="Voter ID" class="form-control"><br>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="text" id="email" name="email" placeholder="Email" class="form-control">
+									<br>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<input type="text" id="address" name="address" placeholder="Account Address" class="form-control">
+									<br>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="card-footer">
+                    <button class="btn btn-primary" type="login" id="loginbutton">Log In</button>
+                    <a href="index.html" class="btn btn-danger">Go Back</a>
+				</div>			
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+	<script src="lib/js/jquery-3.4.1.min.js"></script>
+	<script src="lib/js/popper.min.js"></script>
+	<script src="lib/js/bootstrap.min.js"></script>
+	<script src="lib/js/web3.min.js"></script>
+	<script src="app.js"></script>
+
+	<script>
+		console.log(ElectionApp);
+
+		ElectionApp.Contract.methods.getNumofCandidates().call().then(console.log);
+
+		ElectionApp.Contract.methods.electionName().call().then(console.log);
+
+		$('#loginbutton').click(e => {
+			if (typeof window.ethereum !== 'undefined') {
+				ethereum.enable().then(accounts => {
+					ElectionApp.accounts = accounts;
+					window.location.replace('/voter-dashboard.html');
+				});
+			} else {
+				window.location.replace('/voter-dashboard.html');
+			}
+		});
+	</script>
+</body>
+
+</html>

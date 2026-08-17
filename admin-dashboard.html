@@ -1,0 +1,84 @@
+<!-- Bloc-Vote by Precious Temowo -->
+<html>
+
+<head>
+	<title>Bloc-Vote</title>
+	<link rel="stylesheet" href="lib/css/bootstrap.min.css">
+</head>
+
+<body>
+
+
+
+	<!-- Voter Login -->
+	<div class="container">
+		<br>
+		<br>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4">
+					<img src="blocvote.png" alt="">
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+			<br>
+			<br>
+			<div class="card">
+				<div class="card-head">
+					<h3
+						style="text-align: center; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">
+						Admin Dashboard</h3>
+				</div>
+				<center>
+					<div class="card-body">
+						<div class="col-md-4"></div>
+						
+						<h5 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Welcome
+							Admin</h5> <br>
+							<h5 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;" id="electionName">
+							</h5> <br>	
+						<a href="new-election.html" class="btn btn-secondary text-white" style="width:300px;">Add Election Information</a> <br> <br>
+
+
+
+						<a href="results.html" class="btn btn-success text-white" style="width:150px;">View Results</a>
+						<button class="btn btn-danger" id="endElection" style="width: 150px;">End Election</button> <br>
+						<br>
+
+				</center>
+				<div class="card-footer">
+					<a href="index.html" class="btn btn-danger text-white" style="width:150px;">Log Out</a>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<script src="lib/js/jquery-3.4.1.min.js"></script>
+	<script src="lib/js/popper.min.js"></script>
+	<script src="lib/js/bootstrap.min.js"></script>
+	<script src="lib/js/web3.min.js"></script>
+	<script src="app.js"></script>
+
+	<script>
+		console.log(ElectionApp);
+		ElectionApp.Contract.methods.electionName().call().then((result) => {
+			$("#electionName").html("<b>Election Name: " + result);
+		});
+
+
+		$('#endElection').click(e => {
+			ElectionApp.Contract.methods.end().send({ from: ElectionApp.accounts[0] }).then(result => {
+				alert("Election Ended Successfully");
+			}).catch(error => {
+				alert("Failed to End Election");
+			});
+		});
+
+	</script>
+</body>
+
+
+</html>

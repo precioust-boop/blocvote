@@ -1,0 +1,21 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.keystore
+mnemonic.txt
+
+# Dependencies and generated blockchain artifacts
+node_modules/
+build/
+artifacts/
+cache/
+coverage/
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/
+*.swp

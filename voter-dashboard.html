@@ -1,0 +1,120 @@
+<!-- Bloc-Vote by Precious Temowo -->
+<html>
+
+<head>
+	<title>Bloc-Vote</title>
+	<link rel="stylesheet" href="lib/css/bootstrap.min.css">
+</head>
+<body>
+
+
+
+ 	<!-- Voter Login -->
+     <div class="container">
+		<br>
+		<br>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4">
+					<img src="blocvote.png" alt="">
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+			<br>
+			<br>
+			<div class="card">
+				<div class="card-head">
+					<h3 style="text-align: center; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"> Voter Dashboard</h3>
+				</div>
+				<div class="card-body">
+					<div class="col-md-4"></div>
+                                <h5 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Welcome, *name of voter*</h5>
+                                
+								<center>
+                                    <h5 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;" id="electionName"></h5>
+
+																		<!-- <button class="btn btn-primary" id="viewCandidates" style="width: 150px;">View Candidates</button> -->
+																		<br> <br>
+																		<table id="candidateTable" class="table table-striped table-bordered" style="width:100%">
+																			<thead>
+																				<tr>
+																					<th>Candidate ID</th>
+																					<th>Candidate Name</th>
+																				</tr>
+																			</thead>
+																			<tbody></tbody>
+																		</table>
+																		<!-- <button class="btn btn-secondary" id="sendVote" style="width: 150px;">Send Vote</button> -->
+																		<br> <br>
+																		<div style="width: 50%;" class="input-group">
+																			<select class="custom-select" id="inputGroupSelect">
+																				<option value="" selected>Choose Candidate ID</option>
+																			</select>
+																			<div class="input-group-append">
+																				<button class="btn btn-secondary" id="sendVote" style="width: 150px;">Send Vote</button>
+																			</div>
+																		</div>
+																		<br> <br>
+																		<a href="results.html" class="btn btn-success" id="displayResults" style="width: 150px;">View Results</a>
+																		<br> <br>
+								</center>
+				<div class="card-footer">
+                    <a href="index.html" class="btn btn-danger text-white" style="width:150px;">Log Out</a>
+                </div>			
+            </div>
+
+		</div>
+
+		</div>
+
+
+		<script src="lib/js/jquery-3.4.1.min.js"></script>
+    <script src="lib/js/popper.min.js"></script>
+    <script src="lib/js/bootstrap.min.js"></script>
+    <script src="lib/js/web3.min.js"></script>
+    <script src="app.js"></script>
+<script>
+    console.log(ElectionApp);
+
+    ElectionApp.Contract.methods.electionName().call().then((result) => {
+                $("#electionName").html("<b>Election Name: " + result);
+            });
+						
+		ElectionApp.Contract.methods.getNumofCandidates().call().then((numOfCandidates) => {
+			const candidatesPromise = [];
+			for (let i = 0; i < numOfCandidates; i++) {
+				candidatesPromise.push(ElectionApp.Contract.methods.candidates(i).call());
+			}
+			let resultsHTML = '';
+			let optionsHTML = '';
+			Promise.all(candidatesPromise).then((data) => {
+				// data.sort((a, b) => b.voteCount - a.voteCount);
+				data.forEach((value, index) => {
+					resultsHTML += `<tr><td>${index}</td><td>${value.name}</td></tr>`;
+					optionsHTML += `<option value="${index}">${index}</option>`;
+				});
+
+				$('#candidateTable').find('tbody').html(resultsHTML);
+				$('#inputGroupSelect').append(optionsHTML);
+			});
+		});
+
+		$('#sendVote').on('click', event => {
+			const candidateId = $('#inputGroupSelect').val();
+			if (!candidateId) {
+				return alert('You have to select a candidate ID');
+			}
+
+			// console.log(candidateId);
+			ElectionApp.Contract.methods.vote(parseInt(candidateId)).send({ from: ElectionApp.accounts[0] }).then(result => {
+				alert("Vote Cast Successfully");
+			}).catch(error => {
+				alert("Failed to cast Vote");
+			});
+		});
+</script>
+</body>
+
+
+</html>
