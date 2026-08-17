@@ -1,0 +1,18 @@
+{
+  "name": "blocvote",
+  "version": "2.0.0",
+  "private": true,
+  "description": "An educational blockchain voting prototype built with Solidity and Hardhat.",
+  "type": "module",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.0",
+    "@types/chai": "^5.2.0",
+    "chai": "^5.2.0",
+    "hardhat": "^3.0.0",
+    "typescript": "~5.8.0"
+  }
+}
